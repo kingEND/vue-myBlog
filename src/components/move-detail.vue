@@ -11,12 +11,13 @@
     </div>
     <!--影视简介-->
     <div class="Detail-tips-wrap"><span class="Detail-tips">影视简介</span><span class="outline"></span></div>
-    <div class="Detail-content">
-      {{Info.summary}}
+    <div>
+      {{summary}}
+      <span class="button-taps" @click="allSummary">{{buttonText}}</span>
     </div>
     <!--演员列表-->
     <div class="Detail-tips-wrap"><span class="Detail-tips">主演列表</span><span class="outline"></span></div>
-    <casts :directors="Info.directors"  :casts="Info.casts"></casts>
+    <casts :directors="Info.directors" :casts="Info.casts"></casts>
     <!--影评列表-->
     <div top class="Detail-tips-wrap"><span class="Detail-tips">影评列表</span><span class="outline"></span></div>
     <comment></comment>
@@ -39,6 +40,7 @@
           casts: temp.casts,
           directors: temp.directors
         }
+        this.summary = this.Info.summary.substring(0, 100)
         console.log(temp)
       })
     },
@@ -46,7 +48,22 @@
       return {
         baseInfo: '',
         moveId: '',
-        Info: ''
+        Info: '',
+        isActive: true,
+        summary: '',
+        buttonText: '...展开'
+      }
+    },
+    methods: {
+      allSummary () {
+        if (this.isActive) {
+          this.summary = this.Info.summary.substring(0, 100)
+          this.buttonText = '...展开'
+        } else {
+          this.summary = this.Info.summary
+          this.buttonText = '收起'
+        }
+        this.isActive = !this.isActive
       }
     },
     components: {Star, Casts, Comment}
@@ -62,6 +79,15 @@
     justify-content: center;
     align-items: center;
     box-sizing: border-box;
+  }
+
+  .button-taps {
+    color: blue;
+    font-size: 16px;
+    display: inline-block;
+    width: 100px;
+    height: 24px;
+    line-height: 24px;
   }
 
   .Detail-content {
@@ -98,6 +124,7 @@
     left: 0;
     z-index: -1;
   }
+
   [top] {
     margin-top: 190px;
   }
